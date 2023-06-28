@@ -1,18 +1,31 @@
-/*
- * Project tmp_thing
- * Description:
- * Author:
- * Date:
- */
+#include "oled-wing-adafruit.h"
 
-// setup() runs once, when the device is first turned on.
+SYSTEM_MODE(MANUAL);
+SYSTEM_THREAD(ENABLED);
+
+OledWingAdafruit display;
+
 void setup() {
-  // Put initialization like pinMode and begin functions here.
+  display.setup();
 
+  display.clearDisplay();
+	display.display();
+
+  pinMode(A0, INPUT);
 }
 
-// loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  // The core of your code will likely live here.
+  display.loop();
 
+  show_temp(((analogRead(A0) * 3.3 / 4095.0) - 0.5) * 100);
+}
+
+
+void show_temp(float number) {
+  display.clearDisplay();
+  display.setTextSize(1);
+	display.setTextColor(WHITE);
+	display.setCursor(0,0);
+	display.println(number);
+	display.display();
 }
